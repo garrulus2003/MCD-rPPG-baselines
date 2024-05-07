@@ -1,3 +1,5 @@
+картинка из статьи
+
 # :wave: Introduction
 
 This repository contains baselines and data preparation code for Multi-Camera Dataset rPPG (будет ссылкой). 
@@ -70,10 +72,13 @@ STEP 1: Clone this repository
 
 STEP 2: Install Mediapipe(https://developers.google.com/mediapipe/solutions/setup_python) and [torch](https://pytorch.org/get-started/locally/) version compatible with your cuda version and packet manager. 
 
-STEP 3: Insall other packages by running `pip install r requirements.txt`
+STEP 3: Insall other packages by running `pip install -r requirements.txt`
 
 # :pizza: Data preparation
 ## Frames preparation
+картинка из статьи
+
+To 
 
 ## Videos preparation
 
