@@ -1,0 +1,10 @@
+argparse
+pandas
+numpy
+tqdm
+opencv-python
+timm
+scipy
+scikit-learn
+sk-video
+scikit-image
