@@ -263,7 +263,10 @@ To train one of presented models with custom hyperparameters run the following c
 Model name should be on of `['resnet50', 'vit', 'swin', 'rexnet150_pretrained', 'enet2_pretrained']` for case of frame-wise models, on of `['r3d', 'mc3', 'r2plus1d', 'mvit']` for video-wise models and one of `[TSCAN', 'POS_WANG', 'LGI', 'POS_WANG_mask', 'LGI_mask']` for models retrieving PPG. 
 
 ```
-python train.py --dataframe your_train_dataframe --model_class your_model_class --model_name your_model_name
+python evaluate.py \
+--dataframe your_train_dataframe \
+--model_class your_model_class \
+--model_name your_model_name
 ```
 If model is supervised i. e. not one of `['POS_WANG', 'LGI', 'POS_WANG_mask', 'LGI_mask']`, it is also necessary to provide a path to checkpoint in argument `--path_to_ckpt`. 
 For evaluation of any model one can also define `--device` and `--exp_name` as in training.
