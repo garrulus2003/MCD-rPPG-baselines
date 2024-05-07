@@ -133,8 +133,26 @@ We report results achivied by ViT and RexNet150 trained in two settings: having 
 ```
 bash train_scripts/models_by_frame_regression.sh
 ```
+Ниже приведены результаты MAE на тестовой выборке.
 
-[таблица с результатами]
+| Параметр| ReXNet | ViT | ReXNet all argets | ViT all argets |
+|----------|----------|----------|----------|----------|
+| age | 4.386 | 1.689 | 1.669 | 1.921 | 4.461 |
+| bmi | 3.277 | 2.516 | 2.534 | 2.454 | 2.803 |
+|lower_ap| 7.423 | 8.581 | 8.146 | 8.013 | 7.870 |
+|upper_ap| 13.606 | 14.049 | 13.788 | 13.178 | 13.299 |
+|saturation| 0.872 | 1.814 | 0.946 | 0.855 | 0.876 |
+|temperature| 0.094 | 0.614 | 0.128 | 0.110 | 0.103 |
+|sress| 1.144 | 1.198 | 1.210 | 1.117 | 1.156 |
+|hemoglobin| 1.342 | 1.223 | 1.154 | 1.110 | 1.385 |
+|glyc. hemogloin| 0.418 | 0.533 | 0.526 | 0.513 | 0.487 |
+|cholesterol| 0.647 | 0.692 | 0.710 | 0.629 | 0.680 |
+|respiratory| 1.399 | 1.453 | 1.488 | 1.483 | 1.455 |
+|rigidity| 2.21| 2.308 | 2.320 |2.284 | 2.201 |
+|pulse| 15.043 | 16.564 | 16.121 | 14.685 | 15.316 |
+
+
+
 
 We also report results achieved by all five models on gender prediction task. To reproduce run
 
