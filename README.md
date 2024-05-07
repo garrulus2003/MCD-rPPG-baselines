@@ -14,7 +14,7 @@ To learn more about the **baselines** see (ссылка на статью на �
 
 # :city_sunset: Dataset
 
-The dataset contains data about 600 patients. Each patient was filmed twice (before and after physical activity). Each time video was recorded from three different camera angles simultaniosly. Each video is assosiated with a synchronised PPG-signal, an ECG and various other medical parameters. After downloading the dataset make sure to organize as shown below. Also make sure that paths in the `db.csv` file point to true location of the dataset files.
+The dataset contains data about 600 patients. Each patient was filmed twice (before and after physical activity). Every time a video was recorded from three different camera angles simultaneously. Each video is assosiated with a synchronised PPG-signal, an ECG and various medical parameters. After downloading the dataset make sure to organize as shown below. Also make sure that paths in the `db.csv` file point to true locationы of the dataset files.
 
     -----------------
          data/
@@ -68,7 +68,7 @@ To run the baselines follow the steps:
 
 STEP 1: Clone this repository
 
-STEP 2: Install Mediapipe(https://developers.google.com/mediapipe/solutions/setup_python) and [torch](https://pytorch.org/get-started/locally/) version compatible with your cuda version and packet manager. 
+STEP 2: Install [Mediapipe](https://developers.google.com/mediapipe/solutions/setup_python) and [torch](https://pytorch.org/get-started/locally/) version compatible with your cuda version and packet manager. 
 
 STEP 3: Insall other packages by running `pip install -r requirements.txt`
 
@@ -121,43 +121,27 @@ To split the data into to samples one should run with hyperparameters of their c
 ```
 # :camera: Models with frame input
 There are 5 available models.
-* ResNet50
-* ViT
-* Swin
+* ResNet50 initialized with weights pretrained on ImageNet
+* ViT initialized with weights pretrained on ImageNet
+* Swin initialized with weights pretrained on ImageNet
 * EficientNet_b2 initialized with weights from [face-emotion-recognition](https://github.com/av-savchenko/face-emotion-recognition/tree/main/models/pretrained_faces) To use it, download sile manually and put it in `checkpoints` folder under name `pretrained_enet2`.
-* ReXNet150 initialized with weights from [face-emotion-recognition](https://github.com/av-savchenko/face-emotion-recognition/tree/main/models/pretrained_faces) To use it, download sile manually and put it in `checkpoints` folder under name `pretrained_enet2`.
-  
-To train them to predict all targets simultaneously run
+* ReXNet150 initialized with weights from [face-emotion-recognition](https://github.com/av-savchenko/face-emotion-recognition/tree/main/models/pretrained_faces) To use it, download sile manually and put it in `checkpoints` folder under name `pretrained_rexnet`.
 
+See below for custom training and evaluation of models with frame input. Trainig options such as learning rate, batch size, number of epochs etc could be varied.
+
+We report results achivied by ViT and RexNet150 trained in two settings: having exactly one argument as target or having all regression targets at the same time. To reproduce those results run
 ```
-python train.py \
---model_class by_frame \
---model_name vit \
---target all \
---dataframe data/frames_df.csv \
---exp_name exps/frames_all \
---num_epochs 100 \
---lr 1e-3 \
---unfreeze
+bash train_scripts/models_by_frame_regression.sh
 ```
 
-To train then to predict one target but not all run with option `--target your_target`.
+[таблица с результатами]
 
-To train only head remove `--unfreeze` parameter. To use random initialization instead of pretrained weights add `--from_scratch`
-
-To evaluate model on the subdataset of your choice run code similar to the one below but with your trainig parameters. Results will be in the directory named like `--test_exp` parameter.
+We also report results achieved by all five models on gender prediction task. To reproduce run
 
 ```
-python train.py \
---model_class by_frame \
---model_name vit \
---target age \
---dataframe data/frames_df.csv \
---exp_name exps/frames_all \
---path_to_ckpt fexps/frames_all/state_dict.pt
+bash train_scripts/models_by_frame_gender.sh
 ```
-
-Results with hyperparameters as listed above are:
+[таблица с результатами]
 
 # :video_camera: Models with video input
 Pipeline hear is similar to the one by frames.
@@ -167,9 +151,116 @@ Four models are available
 *
 *
 
-The results are
+See below for custom training and evaluation of models with frame input. Trainig options such as learning rate, batch size, number of epochs etc could be varied. Also there are options to crop a video, skip some frames or group frames and then average.
+
+We report results achivied by Video ResNet R2Plus1D_18 taking 10-second videos as input trained to predict all regression parameters simultaneously. This model os train using only frontal camera views.
+To reproduce run 
+
+```
+bash train_scripts/models_by_video.sh
+```
+[таблица с результатами]
 
 # :chart_with_downwards_trend: rPPG models
 
+This part is deeply based on [rppg-toolbox](https://github.com/ubicomplab/rPPG-Toolbox/blob/main/README.md). 
+We provide several methods to predict photoplethysmogram from video. 
+* POS_WANG statistical algorithm
+* POS_WANG that accounts only facial skin pixels
+* LGI statistical algorithm
+* POS_WANG that accounts only facial skin pixels
+* TSCAN supervised neural model
+
+To reproduce results run
+
+```
+bash train_scripts/ppg_models.sh
+```
+
+[таблица с результатами]
+
+# :runner: Custom training and evaluation
+## Training
+
+To train one of presented models with custom hyperparameters run the following code.
+
+```
+
+```
+
+## Evaluation
+
+
 # :pray: Citations
 
+```
+@article{liu2022rppg,
+  title={rPPG-Toolbox: Deep Remote PPG Toolbox},
+  author={Liu, Xin and Narayanswamy, Girish and Paruchuri, Akshay and Zhang, Xiaoyu and Tang, Jiankai and Zhang, Yuzhe and Wang, Yuntao and Sengupta, Soumyadip and Patel, Shwetak and McDuff, Daniel},
+  journal={arXiv preprint arXiv:2210.00716},
+  year={2022}
+}
+```
+
+```
+@inproceedings{savchenko2023facial,
+  title = 	 {Facial Expression Recognition with Adaptive Frame Rate based on Multiple Testing Correction},
+  author =       {Savchenko, Andrey},
+  booktitle = 	 {Proceedings of the 40th International Conference on Machine Learning (ICML)},
+  pages = 	 {30119--30129},
+  year = 	 {2023},
+  editor = 	 {Krause, Andreas and Brunskill, Emma and Cho, Kyunghyun and Engelhardt, Barbara and Sabato, Sivan and Scarlett, Jonathan},
+  volume = 	 {202},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {23--29 Jul},
+  publisher =    {PMLR},
+  url={https://proceedings.mlr.press/v202/savchenko23a.html}
+}
+```
+
+```
+@inproceedings{savchenko2021facial,
+  title={Facial expression and attributes recognition based on multi-task learning of lightweight neural networks},
+  author={Savchenko, Andrey V.},
+  booktitle={Proceedings of the 19th International Symposium on Intelligent Systems and Informatics (SISY)},
+  pages={119--124},
+  year={2021},
+  organization={IEEE},
+  url={https://arxiv.org/abs/2103.17107}
+}
+```
+
+```
+@inproceedings{Savchenko_2022_CVPRW,
+  author    = {Savchenko, Andrey V.},
+  title     = {Video-Based Frame-Level Facial Analysis of Affective Behavior on Mobile Devices Using EfficientNets},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) Workshops},
+  month     = {June},
+  year      = {2022},
+  pages     = {2359-2366},
+  url={https://arxiv.org/abs/2103.17107}
+}
+```
+
+```
+@inproceedings{Savchenko_2022_ECCVW,
+  author    = {Savchenko, Andrey V.},
+  title     = {{MT-EmotiEffNet} for Multi-task Human Affective Behavior Analysis and Learning from Synthetic Data},
+  booktitle = {Proceedings of the European Conference on Computer Vision (ECCV 2022) Workshops},
+  pages={45--59},
+  year={2023},
+  organization={Springer},
+  url={https://arxiv.org/abs/2207.09508}
+}
+```
+
+```
+@article{savchenko2022classifying,
+  title={Classifying emotions and engagement in online learning based on a single facial expression recognition neural network},
+  author={Savchenko, Andrey V and Savchenko, Lyudmila V and Makarov, Ilya},
+  journal={IEEE Transactions on Affective Computing},
+  year={2022},
+  publisher={IEEE},
+  url={https://ieeexplore.ieee.org/document/9815154}
+}
+```
