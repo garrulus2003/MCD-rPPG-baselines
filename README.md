@@ -186,7 +186,6 @@ To train one of presented models with custom hyperparameters run the following c
 
 ```
 python train.py --dataframe your_train_dataframe --model_class your_model_class
-
 ```
 If `--model_class` is `by_frame` or `by_video` it is also necessary to specify `--model_name` and `--target`. Model name can be chosen from list `['r3d', 'mc3', 'r2plus1d', 'mvit']` in case of video and from list `['resnet50', 'vit', 'swin', 'rexnet150_pretrained', 'enet2_pretrained']` in case of frames. Target can be on of the names of medical parameters in the dataset or `'all'`. The results of running this command will be a trained model and training losses stored in directory specified in `--exp_name`, default is `test_exp`.
 
@@ -216,6 +215,17 @@ There also are several hyperparameers used only for video case, in other cases t
 
 
 ## Evaluation
+To train one of presented models with custom hyperparameters run the following code. `--model_class` should be one of `by_frame`, `by_video`, `ppg`.
+Model name should be on of `['resnet50', 'vit', 'swin', 'rexnet150_pretrained', 'enet2_pretrained']` for case of frame-wise models, on of `['r3d', 'mc3', 'r2plus1d', 'mvit']` for video-wise models and one of `[TSCAN', 'POS_WANG', 'LGI', 'POS_WANG_mask', 'LGI_mask']` for models retrieving PPG. 
+
+```
+python train.py --dataframe your_train_dataframe --model_class your_model_class --model_name your_model_name
+```
+If model is supervised i. e. not one of `['POS_WANG', 'LGI', 'POS_WANG_mask', 'LGI_mask']`, it is also necessary to provide a path to checkpoint in argument `--path_to_ckpt`. 
+For evaluation of any model one can also define `--device` and `--exp_name` as in training.
+
+Result of this programme are a file `predictions.csv` with model predictions of arget and `metrics.json`, both in the folder specified in `--exp_name`.
+When evaluating a model by frames or by video it is also necessary to specify model and input structure like in training by providing parameters `--two_layers`, `--hidden_dim`, `--crop`, `--frequency`, `--avg_over_frames` with same values.
 
 
 # :pray: Citations
