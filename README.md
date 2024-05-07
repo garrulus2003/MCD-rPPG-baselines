@@ -133,9 +133,10 @@ We report results achivied by ViT and RexNet150 trained in two settings: having 
 ```
 bash train_scripts/models_by_frame_regression.sh
 ```
-Ниже приведены результаты MAE на тестовой выборке.
 
-| Параметр| ReXNet | ViT | ReXNet all argets | ViT all argets |
+MAE on the test subset is presened below.
+
+| target | ReXNet | ViT | ReXNet all argets | ViT all argets |
 |----------|----------|----------|----------|----------|
 | age | 4.386 | 1.689 | 1.669 | 1.921 | 4.461 |
 | bmi | 3.277 | 2.516 | 2.534 | 2.454 | 2.803 |
@@ -159,15 +160,21 @@ We also report results achieved by all five models on gender prediction task. To
 ```
 bash train_scripts/models_by_frame_gender.sh
 ```
-[таблица с результатами]
+|model|	accuracy |F1 |
+|-----|----------|---|
+|resnet50|0.952|0.961|
+|swin | 0.957 | 0.964|
+|rexnet150_pretrained | 0.989 | 0.991 |
+|vit | 0.951 | 0.96 |
+|enet2_pretrained | 0.979 | 0.983 |
 
 # :video_camera: Models with video input
 Pipeline hear is similar to the one by frames.
 Four models are available
-*
-*
-*
-*
+* Video ResNet_18 3D (3-dimenaional convolutions)
+* Video ResNet_18 MC3 (mixed convolutions)
+* Video ResNet_18 R2Plus1D (2D spatial and 1D temporal convolutions)
+* MViT
 
 See below for custom training and evaluation of models with frame input. Trainig options such as learning rate, batch size, number of epochs etc could be varied. Also there are options to crop a video, skip some frames or group frames and then average.
 
@@ -177,7 +184,22 @@ To reproduce run
 ```
 bash train_scripts/models_by_video.sh
 ```
-[таблица с результатами]
+
+| target | R2Plus1D_18 | R2Plus1D_18 every 8-th frame | R2Plus1D_18 every 8-th + avg|
+|----------|----------| --- | --- |
+| age | 1.706 | 1.866 | 1.853 |
+| bmi | 2.336 | 2.365 | 2.405 |
+|lower_ap| 8.279 | 7.728 | 7.960 |
+|upper_ap| 12.540 | 13.050 | 12.727 |
+|saturation| 1.274 | 1.057 | 0.968 |
+|temperature| 0.258 | 0.199 | 0.190 |
+|sress| 1.124 | 1.137 | 1.219 | 1.219 |
+|hemoglobin| 1.158 | 1.199 |  1.139 |
+|glyc. hemogloin| 0.502 | 0.498 | 0.494 |
+|cholesterol| 0.689 | 0.662 |  0.679 |
+|respiratory| 1.597 | 1.409 | 1.524 |
+|rigidity| 2.170 | 2.241 | 2.226 |
+|pulse| 15.176 | 14.161 | 14.675 |
 
 # :chart_with_downwards_trend: rPPG models
 
@@ -195,7 +217,11 @@ To reproduce results run
 bash train_scripts/ppg_models.sh
 ```
 
-[таблица с результатами]
+| model | POS_WANG | POS_WANG_mask | LGI | LGI_mask | TS_CAN |
+| ---- | ---- | ----| ----| ----| ---- |
+| MAE heart rate (beats / min ) | 4.463 | 2.968 | 7.368 | 5.418 | 2.841 |
+
+
 
 # :runner: Custom training and evaluation
 ## Training
