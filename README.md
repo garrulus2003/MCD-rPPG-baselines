@@ -182,11 +182,38 @@ bash train_scripts/ppg_models.sh
 # :runner: Custom training and evaluation
 ## Training
 
-To train one of presented models with custom hyperparameters run the following code.
+To train one of presented models with custom hyperparameters run the following code. `--model_class` should be one of `by_frame`, `by_video`, `ppg`.
 
 ```
+python train.py --dataframe your_train_dataframe --model_class your_model_class
 
 ```
+If `--model_class` is `by_frame` or `by_video` it is also necessary to specify `--model_name` and `--target`. Model name can be chosen from list `['r3d', 'mc3', 'r2plus1d', 'mvit']` in case of video and from list `['resnet50', 'vit', 'swin', 'rexnet150_pretrained', 'enet2_pretrained']` in case of frames. Target can be on of the names of medical parameters in the dataset or `'all'`. The results of running this command will be a trained model and training losses stored in directory specified in `--exp_name`, default is `test_exp`.
+
+For any of the model classes you can also specify
+
+* `--batch_size`
+* `--lr`
+* `--num_epochs`
+* `--device` can be cuda or cpu, however for majority of algorithms it wil take too long to converge on cpu
+* `--exp_name` path to folder where training logs and trained model will be stores
+* `--seed` random seed for reproducibility
+
+For models working with frames or videos you can also vary it'sstructure and training procedure
+
+* `--two_layers` set to `True` (which is default) if one wants the model head to consist out of two linear layers instead of one
+* `--hidden_dim` is the size of hidden dimension if `--two_layers` is set to `True` and ignored otherwise
+* `--criterion` deermines whether `MAE` or `MSE` is used for training, default is `MAE`
+* `--scale` scales target dividing it by some constant
+* `--unfreeze` is a flag that allows to train whole model and not only head
+* `--from_scratch` is a flag that initializes model with random weights instead of pretrined ones
+
+There also are several hyperparameers used only for video case, in other cases they are ignored.
+* `--crop` integer parameter, crops all input videos to specific length
+* `--frequency` when set to $n$ makes model consider only every $n$-th frame of the video
+* `--avg_over_frames` is a flag that makes the model divide input into blocks of size `--frequency` and average frames in each block
+  
+
 
 ## Evaluation
 
