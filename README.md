@@ -219,7 +219,7 @@ bash train_scripts/ppg_models.sh
 
 | model | POS_WANG | POS_WANG_mask | LGI | LGI_mask | TS_CAN |
 | ---- | ---- | ----| ----| ----| ---- |
-| MAE heart rate (beats / min ) | 4.463 | 2.968 | 7.368 | 5.418 | 2.841 |
+| MAE heart rate (beats / min) | 4.463 | 2.968 | 7.368 | 5.418 | 2.841 |
 
 
 
